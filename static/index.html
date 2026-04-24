@@ -111,14 +111,14 @@
     <h1>PDF Assistant</h1>
     <div id="upload-area">
         <input type="file" id="pdf-input" accept=".pdf" />
-        <button id="upload-btn">📄 Subir PDF</button>
+        <button id="upload-btn">Upload PDF</button>
         <span id="upload-status"></span>
     </div>
     <div id="chat"></div>
-    <div id="pensando">El asistente está pensando...</div>
+    <div id="pensando">The assistant is thinking...</div>
     <div id="input-area">
         <input type="text" id="pregunta" placeholder="Ask something about your document..." />
-        <button id="enviar">Enviar</button>
+        <button id="enviar">Send</button>
     </div>
 
     <script>
@@ -127,7 +127,7 @@
         const enviarBtn = document.getElementById("enviar");
         const pensando = document.getElementById("pensando");
 
-        function añadirMensaje(texto, esUsuario) {
+        function addMessage(texto, esUsuario) {
             const div = document.createElement("div");
             div.className = esUsuario ? "mensaje-usuario" : "mensaje-asistente";
             const burbuja = document.createElement("div");
@@ -165,7 +165,7 @@ document.getElementById("upload-btn").addEventListener("click", subirPDF);
             const pregunta = preguntaInput.value.trim();
             if (!pregunta) return;
 
-            añadirMensaje(pregunta, true);
+            addMessage(pregunta, true);
             preguntaInput.value = "";
             enviarBtn.disabled = true;
             pensando.style.display = "block";
@@ -179,7 +179,7 @@ document.getElementById("upload-btn").addEventListener("click", subirPDF);
             const data = await response.json();
             pensando.style.display = "none";
             enviarBtn.disabled = false;
-            añadirMensaje(data.respuesta, false);
+            addMessage(data.answer, false);
         }
 
         enviarBtn.addEventListener("click", enviarMensaje);

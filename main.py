@@ -2,16 +2,21 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
-import ollama
+import anthropic
 import os
 import fitz
 import shutil
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(title="PDF Assistant", description="RAG-based PDF chatbot", version="1.0")
+anthropic_client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 # Load or create vector database
 print("Starting...")
@@ -68,8 +73,13 @@ async def chat(request: ChatRequest):
 
     chat_history.append({"role": "user", "content": question_with_context})
 
-    response = ollama.chat(model="llama3.1", messages=chat_history)
-    answer = response.message.content
+    response = anthropic_client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=1024,
+        system=chat_history[0]["content"],
+        messages=chat_history[1:]
+    )
+    answer = response.content[0].text
 
     chat_history.append({"role": "assistant", "content": answer})
 
