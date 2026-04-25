@@ -20,7 +20,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Load or create vector database
 print("Starting...")
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+embeddings = HuggingFaceEmbeddings(
+    model_name="all-MiniLM-L6-v2",
+    model_kwargs={"device": "cpu"},
+    encode_kwargs={"batch_size": 1}
+)
 
 if os.path.exists("./chroma_db"):
     print("Loading existing database...")
