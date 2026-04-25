@@ -5,7 +5,6 @@ from pydantic import BaseModel
 import anthropic
 import os
 import fitz
-import shutil
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -20,11 +19,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Load or create vector database
 print("Starting...")
-embeddings = HuggingFaceEmbeddings(
-    model_name="all-MiniLM-L6-v2",
-    model_kwargs={"device": "cpu"},
-    encode_kwargs={"batch_size": 1}
-)
+embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 if os.path.exists("./chroma_db"):
     print("Loading existing database...")

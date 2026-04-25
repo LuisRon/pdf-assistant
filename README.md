@@ -55,3 +55,11 @@ Access it at `http://localhost:8000/docs`
 Upload any PDF using the interface. The app splits it into fragments, stores them
 in a ChromaDB vector database, and uses llama3.1 to answer questions based on
 the document content. Each new PDF upload replaces the previous database.
+
+## Screenshots
+
+### Chat Interface
+![PDF Assistant Interface](screenshots/interface.png)
+
+### API Documentation (Swagger)
+![Swagger UI](screenshots/swagger.png)
